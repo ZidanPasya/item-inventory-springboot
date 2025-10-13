@@ -8,15 +8,18 @@ import org.springframework.stereotype.Service;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.models.dtos.UserDTO;
+import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     // Get All
@@ -31,21 +34,29 @@ public class UserService {
 
     // Insert and Update
     public Boolean save(UserDTO userDTO) {
-        User user = new User();
-        user.setId(userDTO.getId());
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setOfficeEmail(userDTO.getOfficeEmail());
-        user.setRole(new Role(userDTO.getRoleId()));
+        try {
+            User user = new User();
+            user.setId(userDTO.getId());
+            user.setUsername(userDTO.getUsername());
+            user.setPassword(userDTO.getPassword());
+            user.setOfficeEmail(userDTO.getOfficeEmail());
+            user.setRole(roleRepository.findById(userDTO.getRoleId()).orElse(null));
 
-        userRepository.save(user);
+            userRepository.save(user);
 
-        return userRepository.findById(user.getId()).isPresent();
+            return userRepository.findById(user.getId()).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // Delete
     public Boolean remove(Integer id) {
-        userRepository.deleteById(id);
-        return !userRepository.findById(id).isPresent();
+        try {
+            userRepository.deleteById(id);
+            return !userRepository.findById(id).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
-} 
+}

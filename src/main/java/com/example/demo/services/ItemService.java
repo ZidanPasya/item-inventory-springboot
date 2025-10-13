@@ -30,22 +30,30 @@ public class ItemService {
 
     // Insert dan Update
     public Boolean save(ItemDTO itemDTO) {
-        Item item = new Item();
-        item.setId(itemDTO.getId());
-        item.setName(itemDTO.getName());
-        item.setCategory(itemDTO.getCategory());
-        item.setPrice(itemDTO.getPrice());
-        item.setBuyDate(itemDTO.getBuyDate());
-        item.setStatus(itemDTO.getStatus());
-
-        itemRepository.save(item);
-
-        return itemRepository.findById(item.getId()).isPresent();
+        try {
+            Item item = new Item();
+            item.setId(itemDTO.getId());
+            item.setName(itemDTO.getName());
+            item.setCategory(itemDTO.getCategory());
+            item.setPrice(itemDTO.getPrice());
+            item.setBuyDate(itemDTO.getBuyDate());
+            item.setStatus(itemDTO.getStatus());
+    
+            itemRepository.save(item);
+    
+            return itemRepository.findById(item.getId()).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // Delete
     public Boolean remove(Integer id) {
-        itemRepository.deleteById(id);
-        return !itemRepository.findById(id).isPresent();
+        try {
+            itemRepository.deleteById(id);
+            return !itemRepository.findById(id).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

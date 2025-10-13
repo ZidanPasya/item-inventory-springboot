@@ -9,14 +9,17 @@ import com.example.demo.models.Component;
 import com.example.demo.models.Item;
 import com.example.demo.models.dtos.ComponentDTO;
 import com.example.demo.repositories.ComponentRepository;
+import com.example.demo.repositories.ItemRepository;
 
 @Service
 public class ComponentService {
     private final ComponentRepository componentRepository;
+    private final ItemRepository itemRepository;
     
     @Autowired
-    public ComponentService(ComponentRepository componentRepository) {
+    public ComponentService(ComponentRepository componentRepository, ItemRepository itemRepository) {
         this.componentRepository = componentRepository;
+        this.itemRepository = itemRepository;
     }
 
     // Get All
@@ -31,21 +34,29 @@ public class ComponentService {
 
     // Insert dan Update
     public Boolean save(ComponentDTO componentDTO) {
-        Component component = new Component();
-        component.setId(componentDTO.getId());
-        component.setName(componentDTO.getName());
-        component.setDurability(componentDTO.getDurability());
-        component.setIsBroken(componentDTO.getIsBroken());
-        component.setItem(new Item(componentDTO.getItemId()));
-
-        componentRepository.save(component);
-
-        return componentRepository.findById(component.getId()).isPresent();
+        try {
+            Component component = new Component();
+            component.setId(componentDTO.getId());
+            component.setName(componentDTO.getName());
+            component.setDurability(componentDTO.getDurability());
+            component.setIsBroken(componentDTO.getIsBroken());
+            component.setItem(itemRepository.findById(componentDTO.getItemId()).orElse(null));
+    
+            componentRepository.save(component);
+    
+            return componentRepository.findById(component.getId()).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // Delete
     public Boolean remove(Integer id) {
-        componentRepository.deleteById(id);
-        return !componentRepository.findById(id).isPresent();
+        try {
+            componentRepository.deleteById(id);
+            return !componentRepository.findById(id).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

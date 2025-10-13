@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -36,16 +38,14 @@ public class Employee {
     private String gender;
     private Integer phoneNumber;
     
-    // Memberikan relasi one to one ke tabel user
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private User user;
 
-    // Memberikan relasi many to one ke tabel employee itu sendiri
     @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Employee employee;
 
-    // Memberikan relasi one to many ke tabel employee itu sendiri
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)   
     public List<Employee> employees;
 

@@ -30,22 +30,34 @@ public class EmployeeService {
 
     // Insert and Update
     public Boolean save(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        employee.setId(employeeDTO.getId());
-        employee.setName(employeeDTO.getName());
-        employee.setAge(employeeDTO.getAge());
-        employee.setAddress(employeeDTO.getAddress());
-        employee.setGender(employeeDTO.getGender());
-        employee.setPhoneNumber(employeeDTO.getPhoneNumber());
-        employee.setEmployee(new Employee(employeeDTO.getManagerId()));
+        try {
+            Employee employee = new Employee();
+            employee.setId(employeeDTO.getId());
+            employee.setName(employeeDTO.getName());
+            employee.setAge(employeeDTO.getAge());
+            employee.setAddress(employeeDTO.getAddress());
+            employee.setGender(employeeDTO.getGender());
+            employee.setPhoneNumber(employeeDTO.getPhoneNumber());
+            employee.setEmployee(employeeRepository.findById(employeeDTO.getManagerId()).orElse(null));
 
-        employeeRepository.save(employee);
-
-        return employeeRepository.findById(employee.getId()).isPresent();
+            // employee.setEmployee(employeeDTO.getManagerId() != null 
+            //     ? employeeRepository.findById(employeeDTO.getManagerId()).orElse(null) 
+            //     : null);
+    
+            employeeRepository.save(employee);
+    
+            return employeeRepository.findById(employee.getId()).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public Boolean remove(Integer id) {
-        employeeRepository.deleteById(id);
-        return !employeeRepository.findById(id).isPresent();
+        try {
+            employeeRepository.deleteById(id);
+            return !employeeRepository.findById(id).isPresent();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
