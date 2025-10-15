@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -10,8 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,9 +32,7 @@ public class Item {
     private String name;
     private String category;
     private Integer price;
-
-    @Temporal(TemporalType.DATE)
-    private Date buyDate;
+    private LocalDate buyDate;
     private String status;
 
     // Membuat relasi one to many ke tabel item

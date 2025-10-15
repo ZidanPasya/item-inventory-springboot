@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form th:action="@{/item/insert}" th:object="${itemDTO}" method="POST">
+      <div>
+        <input th:field="*{id}" type="hidden" />
+      </div>
+      <div>
+        <label>Buy Date</label>
+        <input th:field="*{buyDate}" type="date" />
+      </div>
+      <div>
+        <label>Category</label>
+        <input th:field="*{category}" type="text" />
+      </div>
+      <div>
+        <label>Name</label>
+        <input th:field="*{name}" type="text" />
+      </div>
+      <div>
+        <label>Price</label>
+        <input th:field="*{price}" type="text" />
+      </div>
+      <div>
+        <label>Status</label>
+        <input th:field="*{status}" type="text" />
+      </div>
+      <button type="submit">Add Item</button>
+    </form>
+  </body>
+</html>

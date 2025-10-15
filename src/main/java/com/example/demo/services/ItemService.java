@@ -12,7 +12,7 @@ import com.example.demo.repositories.ItemRepository;
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
-    
+
     @Autowired
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
@@ -28,7 +28,7 @@ public class ItemService {
         return itemRepository.findById(id).orElse(null);
     }
 
-    // Insert dan Update
+    // Insert
     public Boolean save(ItemDTO itemDTO) {
         try {
             Item item = new Item();
@@ -38,14 +38,23 @@ public class ItemService {
             item.setPrice(itemDTO.getPrice());
             item.setBuyDate(itemDTO.getBuyDate());
             item.setStatus(itemDTO.getStatus());
-    
+
             itemRepository.save(item);
-    
+
             return itemRepository.findById(item.getId()).isPresent();
         } catch (Exception e) {
             return false;
         }
     }
+
+    // public Boolean update(Item item) {
+    // try {
+    // itemRepository.save(item);
+    // return itemRepository.findById(item.getId()).isPresent();
+    // } catch (Exception e) {
+    // return false;
+    // }
+    // }
 
     // Delete
     public Boolean remove(Integer id) {

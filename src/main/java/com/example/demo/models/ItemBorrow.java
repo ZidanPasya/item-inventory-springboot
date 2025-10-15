@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -30,12 +31,8 @@ public class ItemBorrow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Boolean approvalStatus;
-
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
-
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "id")

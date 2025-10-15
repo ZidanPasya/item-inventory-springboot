@@ -1,6 +1,8 @@
 package com.example.demo.models.dtos;
 
-import java.util.Date;
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +16,8 @@ public class ItemDTO {
     private String name;
     private String category;
     private Integer price;
-    private Date buyDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate buyDate;
     private String status;
 }

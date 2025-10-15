@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Component</title>
+  </head>
+  <body>
+    <a th:href="@{/component/create}">Add Component</a>
+    <table>
+      <thead>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Durability</th>
+        <th>Is Broken</th>
+        <th>Name Item</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <tr th:each="component : ${components}">
+          <td th:text="${component.id}"></td>
+          <td th:text="${component.name}"></td>
+          <td th:text="${component.durability}"></td>
+          <td th:text="${component.isBroken}"></td>
+          <td th:text="${component.item.name}"></td>
+          <td>
+            <a th:href="@{/component/edit/{id}(id=${component.id})}">Edit</a>
+            <a
+              href="#"
+              th:attr="onclick='confirmDelete(event, ' + ${component.id} + ')'"
+              >Delete</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <script>
+      function confirmDelete(event, id) {
+        event.preventDefault();
+        const confirmation = confirm(
+          "Are you sure you want to delete this item?"
+        );
+        if (confirmation) {
+          window.location.href = "//delete/" + id;
+        }
+      }
+    </script>
+  </body>
+</html>

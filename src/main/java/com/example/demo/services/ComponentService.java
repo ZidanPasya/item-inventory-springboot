@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Component;
-import com.example.demo.models.Item;
 import com.example.demo.models.dtos.ComponentDTO;
 import com.example.demo.repositories.ComponentRepository;
 import com.example.demo.repositories.ItemRepository;
@@ -15,7 +14,7 @@ import com.example.demo.repositories.ItemRepository;
 public class ComponentService {
     private final ComponentRepository componentRepository;
     private final ItemRepository itemRepository;
-    
+
     @Autowired
     public ComponentService(ComponentRepository componentRepository, ItemRepository itemRepository) {
         this.componentRepository = componentRepository;
@@ -41,9 +40,9 @@ public class ComponentService {
             component.setDurability(componentDTO.getDurability());
             component.setIsBroken(componentDTO.getIsBroken());
             component.setItem(itemRepository.findById(componentDTO.getItemId()).orElse(null));
-    
+
             componentRepository.save(component);
-    
+
             return componentRepository.findById(component.getId()).isPresent();
         } catch (Exception e) {
             return false;

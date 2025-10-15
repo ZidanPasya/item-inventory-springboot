@@ -1,0 +1,42 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form th:action="@{/user/insert}" method="POST">
+      <div>
+        <input th:name="id" type="hidden" />
+      </div>
+      <div>
+        <label>Fullname</label>
+        <input th:name="name" type="text" />
+      </div>
+      <div>
+        <label>Username</label>
+        <input th:name="username" type="text" />
+      </div>
+      <div>
+        <label>Password</label>
+        <input th:name="*{password}" type="password" />
+      </div>
+      <div>
+        <label>Office Email</label>
+        <input th:name="*{officeEmail}" type="email" />
+      </div>
+      <div>
+        <label>Role</label>
+        <select th:name="*{roleId}">
+          <option
+            th:each="role : ${roles}"
+            th:value="${role.id}"
+            th:text="${role.name}"
+          ></option>
+        </select>
+      </div>
+      <button type="submit">Add User</button>
+    </form>
+  </body>
+</html> -->

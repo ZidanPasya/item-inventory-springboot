@@ -40,11 +40,16 @@ public class UserService {
             user.setUsername(userDTO.getUsername());
             user.setPassword(userDTO.getPassword());
             user.setOfficeEmail(userDTO.getOfficeEmail());
-            user.setRole(roleRepository.findById(userDTO.getRoleId()).orElse(null));
+            if (userDTO.getRoleId() != null) {
+                user.setRole(roleRepository.findById(userDTO.getRoleId()).orElse(null));
+            } else {
+                return false;
+            }
 
             userRepository.save(user);
 
-            return userRepository.findById(user.getId()).isPresent();
+            // return userRepository.findById(user.getId()).isPresent();
+            return true;
         } catch (Exception e) {
             return false;
         }

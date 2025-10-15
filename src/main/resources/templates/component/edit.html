@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form
+      th:action="@{/component/update}"
+      th:object="${componentDTO}"
+      method="POST"
+    >
+      <div>
+        <input th:field="*{id}" type="hidden" />
+      </div>
+      <div>
+        <label>Name</label>
+        <input th:field="*{name}" type="text" />
+      </div>
+      <div>
+        <label>Durability</label>
+        <input th:field="*{durability}" type="text" />
+      </div>
+      <div>
+        <label>Is Broken</label>
+        <input th:field="*{isBroken}" type="text" />
+      </div>
+      <div>
+        <label>Item Name</label>
+        <select th:field="*{itemId}">
+          <option
+            th:each="item : ${items}"
+            th:value="${item.id}"
+            th:text="${item.name}"
+          ></option>
+        </select>
+        <!-- <input th:field="*{itemId}" type="text" /> -->
+      </div>
+      <button type="submit">Edit Component</button>
+    </form>
+  </body>
+</html>
