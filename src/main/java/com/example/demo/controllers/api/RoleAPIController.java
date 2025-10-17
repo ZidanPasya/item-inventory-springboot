@@ -30,25 +30,23 @@ public class RoleAPIController {
     @GetMapping
     public ResponseHandler<List<RoleDTO>> get(@RequestHeader(name = "token") String token,
             @RequestParam(name = "id") Integer id) {
+        ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<List<RoleDTO>>();
         if (!token.equals("")) {
             if (!token.equals("abcd")) {
-                ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<List<RoleDTO>>(
-                        null,
-                        "Token tidak valid",
-                        HttpStatus.UNAUTHORIZED.value());
+                responseHandler.setData(null);
+                responseHandler.setMessage("Token tidak valid");
+                responseHandler.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return responseHandler;
             } else {
-                ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<List<RoleDTO>>(
-                        roleService.get(),
-                        "Data berhasil ditampilkan",
-                        HttpStatus.OK.value());
+                responseHandler.setData(roleService.get());
+                responseHandler.setMessage("Data berhasil ditampilkan");
+                responseHandler.setStatus(HttpStatus.OK.value());
                 return responseHandler;
             }
         }
-        ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<List<RoleDTO>>(
-                null,
-                "Token tidak boleh kosong",
-                HttpStatus.BAD_REQUEST.value());
+        responseHandler.setData(null);
+        responseHandler.setMessage("Token tidak boleh kosong");
+        responseHandler.setStatus(HttpStatus.BAD_REQUEST.value());
         return responseHandler;
     }
 
