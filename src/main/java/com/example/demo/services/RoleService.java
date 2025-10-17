@@ -17,13 +17,13 @@ public class RoleService {
     }
 
     // Get All
-    public List<Role> get() {
-        return roleRepository.findAll();
+    public List<RoleDTO> get() {
+        return roleRepository.get();
     }
 
     // Get by Id
-    public Role get(Integer id) {
-        return roleRepository.findById(id).orElse(null);
+    public RoleDTO get(Integer id) {
+        return roleRepository.get(id);
     }
 
     // Insert and Update
@@ -32,9 +32,9 @@ public class RoleService {
             Role role = new Role();
             role.setId(roleDTO.getId());
             role.setName(roleDTO.getName());
-    
+
             roleRepository.save(role);
-    
+
             return roleRepository.findById(role.getId()).isPresent();
         } catch (Exception e) {
             return false;

@@ -6,13 +6,13 @@
     <title>Component</title>
   </head>
   <body>
-    <a th:href="@{/component/create}">Add Component</a>
+    <a th:href="@{/component/form}">Add Component</a>
     <table>
       <thead>
         <th>ID</th>
         <th>Name</th>
         <th>Durability</th>
-        <th>Is Broken</th>
+        <th>Status</th>
         <th>Name Item</th>
         <th>Action</th>
       </thead>
@@ -21,10 +21,10 @@
           <td th:text="${component.id}"></td>
           <td th:text="${component.name}"></td>
           <td th:text="${component.durability}"></td>
-          <td th:text="${component.isBroken}"></td>
-          <td th:text="${component.item.name}"></td>
+          <td th:text="${component.isBroken} ? 'Broken' : 'Good'"></td>
+          <td th:text="${component.itemName}"></td>
           <td>
-            <a th:href="@{/component/edit/{id}(id=${component.id})}">Edit</a>
+            <a th:href="@{/component/form/{id}(id=${component.id})}">Edit</a>
             <a
               href="#"
               th:attr="onclick='confirmDelete(event, ' + ${component.id} + ')'"

@@ -19,16 +19,16 @@ public class ItemService {
     }
 
     // Get All
-    public List<Item> get() {
-        return itemRepository.findAll();
+    public List<ItemDTO> get() {
+        return itemRepository.get();
     }
 
     // Get by Id
-    public Item get(Integer id) {
-        return itemRepository.findById(id).orElse(null);
+    public ItemDTO get(Integer id) {
+        return itemRepository.get(id);
     }
 
-    // Insert
+    // Insert and Update
     public Boolean save(ItemDTO itemDTO) {
         try {
             Item item = new Item();
@@ -46,15 +46,6 @@ public class ItemService {
             return false;
         }
     }
-
-    // public Boolean update(Item item) {
-    // try {
-    // itemRepository.save(item);
-    // return itemRepository.findById(item.getId()).isPresent();
-    // } catch (Exception e) {
-    // return false;
-    // }
-    // }
 
     // Delete
     public Boolean remove(Integer id) {

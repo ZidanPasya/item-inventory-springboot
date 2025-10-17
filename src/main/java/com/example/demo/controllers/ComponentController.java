@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,51 +35,24 @@ public class ComponentController {
         return "component/index";
     }
 
-    // @GetMapping("create")
-    // public String create(Model model) {
-    // model.addAttribute("componentDTO", new ComponentDTO());
-    // model.addAttribute("items", itemService.get());
-    // return "component/create";
-    // }
-
-    @GetMapping("create")
-    public String create(ModelMap model) {
-        model.addAllAttributes(Map.of(
-                "componentDTO", new ComponentDTO(),
-                "items", itemService.get()));
-        return "component/create";
-    }
-
-    @PostMapping("insert")
-    public String insert(ComponentDTO componentDTO) {
-        Boolean result = componentService.save(componentDTO);
-        if (result) {
-            return "redirect:/component";
-        }
-        return "/component/create";
-    }
-
-    @GetMapping("edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model) {
-        Component component = componentService.get(id);
-        ComponentDTO componentDTO = new ComponentDTO(
-                component.getId(),
-                component.getName(),
-                component.getDurability(),
-                component.getIsBroken(),
-                component.getItem().getId());
-        model.addAttribute("componentDTO", componentDTO);
+    @GetMapping(value = { "form", "form/{id}" })
+    public String form(Model model, @PathVariable(required = false) Integer id) {
         model.addAttribute("items", itemService.get());
-        return "component/edit";
+        if (id != null) {
+            model.addAttribute("componentDTO", componentService.get(id));
+        } else {
+            model.addAttribute("componentDTO", new ComponentDTO());
+        }
+        return "component/form";
     }
 
-    @PostMapping("update")
-    public String update(ComponentDTO componentDTO) {
+    @PostMapping("save")
+    public String save(ComponentDTO componentDTO) {
         Boolean result = componentService.save(componentDTO);
         if (result) {
             return "redirect:/component";
         }
-        return "/component/edit/" + componentDTO.getId();
+        return (componentDTO.getId() != null) ? "/component/edit/{id}" : "/component/create";
     }
 
     @GetMapping("delete/{id}")

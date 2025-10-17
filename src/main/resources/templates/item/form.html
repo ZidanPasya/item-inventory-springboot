@@ -6,17 +6,9 @@
     <title>Document</title>
   </head>
   <body>
-    <form th:action="@{/item/update}" th:object="${itemDTO}" method="POST">
+    <form th:action="@{/item/save}" th:object="${itemDTO}" method="POST">
       <div>
         <input th:field="*{id}" type="hidden" />
-      </div>
-      <div>
-        <label>Buy Date</label>
-        <input th:field="*{buyDate}" type="date" />
-      </div>
-      <div>
-        <label>Category</label>
-        <input th:field="*{category}" type="text" />
       </div>
       <div>
         <label>Name</label>
@@ -27,10 +19,18 @@
         <input th:field="*{price}" type="text" />
       </div>
       <div>
+        <label>Category</label>
+        <input th:field="*{category}" type="text" />
+      </div>
+      <div>
+        <label>Buy Date</label>
+        <input th:field="*{buyDate}" type="date" />
+      </div>
+      <div>
         <label>Status</label>
         <input th:field="*{status}" type="text" />
       </div>
-      <button type="submit">Edit Item</button>
+      <button type="submit">Save Item</button>
     </form>
   </body>
 </html>

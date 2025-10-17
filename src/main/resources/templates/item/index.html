@@ -6,7 +6,7 @@
     <title>Document</title>
   </head>
   <body>
-    <a th:href="@{/item/create}">Add Item</a>
+    <a th:href="@{/item/form}">Add Item</a>
     <table>
       <thead>
         <th>ID</th>
@@ -26,7 +26,7 @@
           <td th:text="${item.buyDate}"></td>
           <td th:text="${item.status}"></td>
           <td>
-            <a th:href="@{/item/edit/{id}(id=${item.id})}">Edit</a>
+            <a th:href="@{/item/form/{id}(id=${item.id})}">Edit</a>
             <a
               href="#"
               th:attr="onclick='confirmDelete(event, ' + ${item.id} + ')'"

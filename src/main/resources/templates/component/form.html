@@ -7,7 +7,7 @@
   </head>
   <body>
     <form
-      th:action="@{/component/update}"
+      th:action="@{/component/save}"
       th:object="${componentDTO}"
       method="POST"
     >
@@ -35,9 +35,8 @@
             th:text="${item.name}"
           ></option>
         </select>
-        <!-- <input th:field="*{itemId}" type="text" /> -->
       </div>
-      <button type="submit">Edit Component</button>
+      <button type="submit">Save Component</button>
     </form>
   </body>
 </html>

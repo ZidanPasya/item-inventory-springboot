@@ -6,7 +6,7 @@
     <title>Role</title>
   </head>
   <body>
-    <form th:action="@{/role/update}" th:object="${roleDTO}" method="POST">
+    <form th:action="@{/role/save}" th:object="${roleDTO}" method="POST">
       <div>
         <input th:field="*{id}" type="hidden" />
       </div>
@@ -14,7 +14,7 @@
         <label>Name</label>
         <input th:field="*{name}" type="text" />
       </div>
-      <button type="submit">Edit Item</button>
+      <button type="submit">Add Role</button>
     </form>
   </body>
 </html>

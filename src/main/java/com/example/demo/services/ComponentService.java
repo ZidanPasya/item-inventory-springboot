@@ -22,13 +22,13 @@ public class ComponentService {
     }
 
     // Get All
-    public List<Component> get() {
-        return componentRepository.findAll();
+    public List<ComponentDTO> get() {
+        return componentRepository.get();
     }
 
     // Get by Id
-    public Component get(Integer id) {
-        return componentRepository.findById(id).orElse(null);
+    public ComponentDTO get(Integer id) {
+        return componentRepository.get(id);
     }
 
     // Insert dan Update

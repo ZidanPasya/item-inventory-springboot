@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.models.Component;
-import com.example.demo.models.Role;
-import com.example.demo.models.dtos.ComponentDTO;
 import com.example.demo.models.dtos.RoleDTO;
 import com.example.demo.services.RoleService;
 
@@ -30,38 +27,23 @@ public class RoleController {
         return "role/index";
     }
 
-    @GetMapping("create")
-    public String create(Model model) {
-        model.addAttribute("roleDTO", new RoleDTO());
-        return "role/create";
+    @GetMapping(value = { "form", "form/{id}" })
+    public String form(Model model, @PathVariable(required = false) Integer id) {
+        if (id != null) {
+            model.addAttribute("roleDTO", roleService.get(id));
+        } else {
+            model.addAttribute("roleDTO", new RoleDTO());
+        }
+        return "role/form";
     }
 
-    @PostMapping("insert")
-    public String insert(RoleDTO roleDTO) {
+    @PostMapping("save")
+    public String save(RoleDTO roleDTO) {
         Boolean result = roleService.save(roleDTO);
         if (result) {
             return "redirect:/role";
         }
-        return "/role/create";
-    }
-
-    @GetMapping("edit/{id}")
-    public String edit(@PathVariable("id") Integer id, Model model) {
-        Role role = roleService.get(id);
-        RoleDTO roleDTO = new RoleDTO(
-                role.getId(),
-                role.getName());
-        model.addAttribute("roleDTO", roleDTO);
-        return "role/edit";
-    }
-
-    @PostMapping("update")
-    public String update(RoleDTO roleDTO) {
-        Boolean result = roleService.save(roleDTO);
-        if (result) {
-            return "redirect:/role";
-        }
-        return "/role/edit/" + roleDTO.getId();
+        return (roleDTO.getId() != null) ? "/role/form/{id}" : "/role/form";
     }
 
     @GetMapping("delete/{id}")

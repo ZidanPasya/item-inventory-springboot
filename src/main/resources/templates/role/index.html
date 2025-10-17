@@ -6,7 +6,7 @@
     <title>Role</title>
   </head>
   <body>
-    <a th:href="@{/role/create}">Add Role</a>
+    <a th:href="@{/role/form}">Add Role</a>
     <table>
       <thead>
         <th>ID</th>
@@ -18,7 +18,7 @@
           <td th:text="${role.id}"></td>
           <td th:text="${role.name}"></td>
           <td>
-            <a th:href="@{/role/edit/{id}(id=${role.id})}">Edit</a>
+            <a th:href="@{/role/form/{id}(id=${role.id})}">Edit</a>
             <a
               href="#"
               th:attr="onclick='confirmDelete(event, ' + ${role.id} + ')'"
