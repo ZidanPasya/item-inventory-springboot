@@ -39,11 +39,15 @@ public class ComponentService {
             component.setName(componentDTO.getName());
             component.setDurability(componentDTO.getDurability());
             component.setIsBroken(componentDTO.getIsBroken());
-            component.setItem(itemRepository.findById(componentDTO.getItemId()).orElse(null));
+            if (componentDTO.getItemId() != null) {
+                component.setItem(itemRepository.findById(componentDTO.getItemId()).orElse(null));
+            } else {
+                return false;
+            }
 
             componentRepository.save(component);
 
-            return componentRepository.findById(component.getId()).isPresent();
+            return true;
         } catch (Exception e) {
             return false;
         }

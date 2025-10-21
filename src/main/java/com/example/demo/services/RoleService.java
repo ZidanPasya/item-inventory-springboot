@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Role;
@@ -12,6 +13,7 @@ import com.example.demo.repositories.RoleRepository;
 public class RoleService {
     private final RoleRepository roleRepository;
 
+    @Autowired
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }

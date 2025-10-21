@@ -38,15 +38,15 @@ public class EmployeeService {
             employee.setAddress(employeeDTO.getAddress());
             employee.setGender(employeeDTO.getGender());
             employee.setPhoneNumber(employeeDTO.getPhoneNumber());
-            employee.setEmployee(employeeRepository.findById(employeeDTO.getManagerId()).orElse(null));
+            if (employeeDTO.getManagerId() != null) {
+                employee.setEmployee(employeeRepository.findById(employeeDTO.getManagerId()).orElse(null));
+            } else {
+                return false;
+            }
 
-            // employee.setEmployee(employeeDTO.getManagerId() != null 
-            //     ? employeeRepository.findById(employeeDTO.getManagerId()).orElse(null) 
-            //     : null);
-    
             employeeRepository.save(employee);
-    
-            return employeeRepository.findById(employee.getId()).isPresent();
+
+            return true;
         } catch (Exception e) {
             return false;
         }
