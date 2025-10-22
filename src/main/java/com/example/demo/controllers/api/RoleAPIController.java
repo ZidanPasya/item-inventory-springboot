@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +28,11 @@ public class RoleAPIController {
     }
 
     // Melakukan Request Header dan Param
+    // Get
     @GetMapping
-    public ResponseHandler<List<RoleDTO>> get(@RequestHeader(name = "token") String token,
-            @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<List<RoleDTO>>();
+    public ResponseHandler<?> get(@RequestHeader(name = "token") String token,
+            @RequestParam(name = "id", required = false) Integer id) {
+        ResponseHandler<Object> responseHandler = new ResponseHandler<>();
         if (!token.equals("")) {
             if (!token.equals("abcd")) {
                 responseHandler.setData(null);
@@ -38,7 +40,11 @@ public class RoleAPIController {
                 responseHandler.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return responseHandler;
             } else {
-                responseHandler.setData(roleService.get());
+                if (id != null) {
+                    responseHandler.setData(roleService.get(id));
+                } else {
+                    responseHandler.setData(roleService.get());
+                }
                 responseHandler.setMessage("Data berhasil ditampilkan");
                 responseHandler.setStatus(HttpStatus.OK.value());
                 return responseHandler;
@@ -51,8 +57,42 @@ public class RoleAPIController {
     }
 
     // Melakukan Request Body
+    // Insert & Update
     @PostMapping
-    public Boolean save(@RequestBody RoleDTO roleDTO) {
-        return roleService.save(roleDTO);
+    public ResponseHandler<List<RoleDTO>> save(@RequestBody RoleDTO roleDTO) {
+        ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<>();
+        boolean status = roleService.save(roleDTO);
+        if (status) {
+            responseHandler.setData(null);
+            if (roleDTO.getId() != null) {
+                responseHandler.setMessage("Data berhasil dirubah");
+            } else {
+                responseHandler.setMessage("Data berhasil disimpan");
+            }
+            responseHandler.setStatus(HttpStatus.OK.value());
+            return responseHandler;
+        }
+        responseHandler.setData(null);
+        responseHandler.setMessage("Data gagal disimpan");
+        responseHandler.setStatus(HttpStatus.BAD_REQUEST.value());
+        return responseHandler;
+    }
+
+    // Delete
+    @DeleteMapping
+    public ResponseHandler<List<RoleDTO>> delete(@RequestHeader(name = "token") String token,
+            @RequestParam(name = "id") Integer id) {
+        ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<>();
+        boolean status = roleService.remove(id);
+        if (status) {
+            responseHandler.setData(null);
+            responseHandler.setMessage("Data berhasil dihapus");
+            responseHandler.setStatus(HttpStatus.OK.value());
+            return responseHandler;
+        }
+        responseHandler.setData(null);
+        responseHandler.setMessage("Data gagal dihapus");
+        responseHandler.setStatus(HttpStatus.BAD_REQUEST.value());
+        return responseHandler;
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.handler.ResponseHandler;
-import com.example.demo.models.dtos.ItemDTO;
-import com.example.demo.services.ItemService;
+import com.example.demo.models.dtos.UserDTO;
+import com.example.demo.services.UserService;
 
 @RestController
-@RequestMapping("/api/item")
-public class ItemAPIController {
-    private final ItemService itemService;
+@RequestMapping("/api/user")
+public class UserAPIController {
+    private final UserService userService;
 
     @Autowired
-    public ItemAPIController(ItemService itemService) {
-        this.itemService = itemService;
+    public UserAPIController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
@@ -39,9 +39,9 @@ public class ItemAPIController {
                 return responseHandler;
             } else {
                 if (id != null) {
-                    responseHandler.setData(itemService.get(id));
+                    responseHandler.setData(userService.get(id));
                 } else {
-                    responseHandler.setData(itemService.get());
+                    responseHandler.setData(userService.get());
                 }
                 responseHandler.setMessage("Data berhasil ditampilkan");
                 responseHandler.setStatus(HttpStatus.OK.value());
@@ -54,31 +54,28 @@ public class ItemAPIController {
         return responseHandler;
     }
 
-    @PostMapping
-    public ResponseHandler<List<ItemDTO>> save(@RequestBody ItemDTO itemDTO) {
-        ResponseHandler<List<ItemDTO>> responseHandler = new ResponseHandler<>();
-        boolean status = itemService.save(itemDTO);
+    @PutMapping
+    public ResponseHandler<UserDTO> update(@RequestBody UserDTO userDTO,
+            @RequestParam(name = "id") Integer id) {
+        ResponseHandler<UserDTO> responseHandler = new ResponseHandler<>();
+        boolean status = userService.update(id, userDTO);
         if (status) {
             responseHandler.setData(null);
-            if (itemDTO.getId() != null) {
-                responseHandler.setMessage("Data berhasil dirubah");
-            } else {
-                responseHandler.setMessage("Data berhasil disimpan");
-            }
+            responseHandler.setMessage("Data berhasil dirubah");
             responseHandler.setStatus(HttpStatus.OK.value());
             return responseHandler;
         }
         responseHandler.setData(null);
-        responseHandler.setMessage("Data gagal disimpan");
+        responseHandler.setMessage("Data gagal dirubah");
         responseHandler.setStatus(HttpStatus.BAD_REQUEST.value());
         return responseHandler;
     }
 
     @DeleteMapping
-    public ResponseHandler<List<ItemDTO>> delete(@RequestHeader(name = "token") String token,
+    public ResponseHandler<List<UserDTO>> delete(@RequestHeader(name = "token") String token,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<ItemDTO>> responseHandler = new ResponseHandler<>();
-        boolean status = itemService.remove(id);
+        ResponseHandler<List<UserDTO>> responseHandler = new ResponseHandler<>();
+        boolean status = userService.remove(id);
         if (status) {
             responseHandler.setData(null);
             responseHandler.setMessage("Data berhasil dihapus");

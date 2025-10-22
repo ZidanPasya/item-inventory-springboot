@@ -19,29 +19,28 @@ public class EmployeeService {
     }
 
     // Get All
-    public List<Employee> get() {
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> get() {
+        return employeeRepository.get();
     }
 
     // Get by Id
-    public Employee get(Integer id) {
-        return employeeRepository.findById(id).orElse(null);
+    public EmployeeDTO get(Integer id) {
+        return employeeRepository.get(id);
     }
 
-    // Insert and Update
-    public Boolean save(EmployeeDTO employeeDTO) {
+    // Update
+    public Boolean update(Integer id, EmployeeDTO employeeDTO) {
         try {
-            Employee employee = new Employee();
-            employee.setId(employeeDTO.getId());
+            Employee employee = employeeRepository.findById(id).orElse(null);
             employee.setName(employeeDTO.getName());
             employee.setAge(employeeDTO.getAge());
             employee.setAddress(employeeDTO.getAddress());
             employee.setGender(employeeDTO.getGender());
             employee.setPhoneNumber(employeeDTO.getPhoneNumber());
             if (employeeDTO.getManagerId() != null) {
-                employee.setEmployee(employeeRepository.findById(employeeDTO.getManagerId()).orElse(null));
+                employee.setManager(employeeRepository.findById(employeeDTO.getManagerId()).orElse(null));
             } else {
-                return false;
+                employee.setManager(null);
             }
 
             employeeRepository.save(employee);
@@ -51,6 +50,29 @@ public class EmployeeService {
             return false;
         }
     }
+
+    // public Boolean save(EmployeeDTO employeeDTO) {
+    // try {
+    // Employee employee = new Employee();
+    // employee.setId(employeeDTO.getId());
+    // employee.setName(employeeDTO.getName());
+    // employee.setAge(employeeDTO.getAge());
+    // employee.setAddress(employeeDTO.getAddress());
+    // employee.setGender(employeeDTO.getGender());
+    // employee.setPhoneNumber(employeeDTO.getPhoneNumber());
+    // if (employeeDTO.getManagerId() != null) {
+    // employee.setManager(employeeRepository.findById(employeeDTO.getManagerId()).orElse(null));
+    // } else {
+    // employee.setManager(null);
+    // }
+
+    // employeeRepository.save(employee);
+
+    // return true;
+    // } catch (Exception e) {
+    // return false;
+    // }
+    // }
 
     public Boolean remove(Integer id) {
         try {

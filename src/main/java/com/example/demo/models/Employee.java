@@ -36,17 +36,17 @@ public class Employee {
     private Integer age;
     private String address;
     private String gender;
-    private Integer phoneNumber;
-    
+    private String phoneNumber;
+
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
-    private Employee employee;
+    private Employee manager;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)   
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
     public List<Employee> employees;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)

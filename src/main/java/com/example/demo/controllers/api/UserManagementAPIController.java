@@ -4,21 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.models.dtos.UserDTO;
+import com.example.demo.models.dtos.UserManagementDTO;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtUtil;
-import com.example.demo.services.UserService;
+import com.example.demo.services.UserManagementService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthAPIController {
+public class UserManagementAPIController {
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -26,29 +27,33 @@ public class AuthAPIController {
     UserRepository userRepository;
 
     @Autowired
-    UserService userService;
+    UserManagementService userManagementService;
 
     @Autowired
     JwtUtil jwtUtils;
 
     @PostMapping("/register")
-    public String register(@RequestBody UserDTO userDTO) {
-        if (userRepository.existsByUsername(userDTO.getUsername())) {
+    public String register(@RequestBody UserManagementDTO userManagementDTO) {
+        if (userRepository.existsByUsername(userManagementDTO.getUsername())) {
             return "Error: Username is already taken!";
         }
-        userService.save(userDTO);
+        userManagementService.save(userManagementDTO);
 
         return "User registered successfully!";
     }
 
     @PostMapping("/login")
-    public String authenticateUser(@RequestBody UserDTO userDTO) {
+    public String authenticateUser(@RequestBody UserManagementDTO userManagementDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        userDTO.getUsername(),
-                        userDTO.getPassword()));
+                        userManagementDTO.getUsername(),
+                        userManagementDTO.getPassword()));
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return jwtUtils.generateToken(userDetails.getUsername());
+        String role = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse(null);
+        return jwtUtils.generateToken(userDetails.getUsername(), role);
     }
 
 }

@@ -28,11 +28,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         try {
-            if (request.getRequestURI().startsWith("/api/role")) {
-                filterChain.doFilter(request, response); // Lanjutkan filter tanpa validasi token
-                return;
-            }
-
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUsernameFromToken(jwt);

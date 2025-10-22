@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.handler.ResponseHandler;
-import com.example.demo.models.dtos.ItemDTO;
-import com.example.demo.services.ItemService;
+import com.example.demo.models.dtos.ComponentDTO;
+import com.example.demo.models.dtos.ItemBorrowDTO;
+import com.example.demo.services.ItemBorrowService;
 
 @RestController
-@RequestMapping("/api/item")
-public class ItemAPIController {
-    private final ItemService itemService;
+@RequestMapping("/api/item-borrow")
+public class ItemBorrowAPIController {
+    private final ItemBorrowService itemBorrowService;
 
     @Autowired
-    public ItemAPIController(ItemService itemService) {
-        this.itemService = itemService;
+    public ItemBorrowAPIController(ItemBorrowService itemBorrowService) {
+        this.itemBorrowService = itemBorrowService;
     }
 
     @GetMapping
@@ -39,9 +39,9 @@ public class ItemAPIController {
                 return responseHandler;
             } else {
                 if (id != null) {
-                    responseHandler.setData(itemService.get(id));
+                    responseHandler.setData(itemBorrowService.get(id));
                 } else {
-                    responseHandler.setData(itemService.get());
+                    responseHandler.setData(itemBorrowService.get());
                 }
                 responseHandler.setMessage("Data berhasil ditampilkan");
                 responseHandler.setStatus(HttpStatus.OK.value());
@@ -55,12 +55,12 @@ public class ItemAPIController {
     }
 
     @PostMapping
-    public ResponseHandler<List<ItemDTO>> save(@RequestBody ItemDTO itemDTO) {
-        ResponseHandler<List<ItemDTO>> responseHandler = new ResponseHandler<>();
-        boolean status = itemService.save(itemDTO);
+    public ResponseHandler<?> save(@RequestBody ItemBorrowDTO itemBorrowDTO) {
+        ResponseHandler<Object> responseHandler = new ResponseHandler<>();
+        boolean status = itemBorrowService.save(itemBorrowDTO);
         if (status) {
             responseHandler.setData(null);
-            if (itemDTO.getId() != null) {
+            if (itemBorrowDTO.getId() != null) {
                 responseHandler.setMessage("Data berhasil dirubah");
             } else {
                 responseHandler.setMessage("Data berhasil disimpan");
@@ -70,23 +70,6 @@ public class ItemAPIController {
         }
         responseHandler.setData(null);
         responseHandler.setMessage("Data gagal disimpan");
-        responseHandler.setStatus(HttpStatus.BAD_REQUEST.value());
-        return responseHandler;
-    }
-
-    @DeleteMapping
-    public ResponseHandler<List<ItemDTO>> delete(@RequestHeader(name = "token") String token,
-            @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<ItemDTO>> responseHandler = new ResponseHandler<>();
-        boolean status = itemService.remove(id);
-        if (status) {
-            responseHandler.setData(null);
-            responseHandler.setMessage("Data berhasil dihapus");
-            responseHandler.setStatus(HttpStatus.OK.value());
-            return responseHandler;
-        }
-        responseHandler.setData(null);
-        responseHandler.setMessage("Data gagal dihapus");
         responseHandler.setStatus(HttpStatus.BAD_REQUEST.value());
         return responseHandler;
     }

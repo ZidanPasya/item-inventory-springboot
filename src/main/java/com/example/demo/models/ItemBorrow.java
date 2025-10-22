@@ -27,7 +27,7 @@ public class ItemBorrow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Boolean approvalStatus;
+    private Integer approvalStatus;
     private LocalDate startDate;
     private LocalDate endDate;
 

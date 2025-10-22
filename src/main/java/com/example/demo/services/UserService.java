@@ -31,20 +31,19 @@ public class UserService {
     }
 
     // Get All
-    public List<User> get() {
-        return userRepository.findAll();
+    public List<UserDTO> get() {
+        return userRepository.get();
     }
 
     // Get by Id
-    public User get(Integer id) {
-        return userRepository.findById(id).orElse(null);
+    public UserDTO get(Integer id) {
+        return userRepository.get(id);
     }
 
-    // Insert and Update
-    public Boolean save(UserDTO userDTO) {
+    // Update
+    public Boolean update(Integer id, UserDTO userDTO) {
         try {
-            User user = new User();
-            // user.setId(userDTO.getId());
+            User user = userRepository.findById(id).orElse(null);
             user.setUsername(userDTO.getUsername());
             user.setPassword(encoder.encode(userDTO.getPassword()));
             user.setOfficeEmail(userDTO.getOfficeEmail());
@@ -53,15 +52,8 @@ public class UserService {
             } else {
                 return false;
             }
+            userRepository.save(user);
 
-            Employee employee = new Employee();
-            employee.setUser(user);
-            employee.setName(userDTO.getName());
-            user.setEmployee(employee);
-
-            employeeRepository.save(employee);
-
-            // return userRepository.findById(user.getId()).isPresent();
             return true;
         } catch (Exception e) {
             return false;
