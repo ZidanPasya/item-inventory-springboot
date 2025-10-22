@@ -55,9 +55,9 @@ public class UserAPIController {
     }
 
     @PutMapping
-    public ResponseHandler<UserDTO> update(@RequestBody UserDTO userDTO,
+    public ResponseHandler<?> update(@RequestBody UserDTO userDTO,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<UserDTO> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = userService.update(id, userDTO);
         if (status) {
             responseHandler.setData(null);
@@ -72,9 +72,9 @@ public class UserAPIController {
     }
 
     @DeleteMapping
-    public ResponseHandler<List<UserDTO>> delete(@RequestHeader(name = "token") String token,
+    public ResponseHandler<?> delete(@RequestHeader(name = "token") String token,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<UserDTO>> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = userService.remove(id);
         if (status) {
             responseHandler.setData(null);

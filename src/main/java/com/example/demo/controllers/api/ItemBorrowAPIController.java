@@ -56,7 +56,7 @@ public class ItemBorrowAPIController {
 
     @PostMapping
     public ResponseHandler<?> save(@RequestBody ItemBorrowDTO itemBorrowDTO) {
-        ResponseHandler<Object> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = itemBorrowService.save(itemBorrowDTO);
         if (status) {
             responseHandler.setData(null);

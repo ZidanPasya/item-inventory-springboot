@@ -55,8 +55,8 @@ public class ItemAPIController {
     }
 
     @PostMapping
-    public ResponseHandler<List<ItemDTO>> save(@RequestBody ItemDTO itemDTO) {
-        ResponseHandler<List<ItemDTO>> responseHandler = new ResponseHandler<>();
+    public ResponseHandler<?> save(@RequestBody ItemDTO itemDTO) {
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = itemService.save(itemDTO);
         if (status) {
             responseHandler.setData(null);
@@ -75,9 +75,9 @@ public class ItemAPIController {
     }
 
     @DeleteMapping
-    public ResponseHandler<List<ItemDTO>> delete(@RequestHeader(name = "token") String token,
+    public ResponseHandler<?> delete(@RequestHeader(name = "token") String token,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<ItemDTO>> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = itemService.remove(id);
         if (status) {
             responseHandler.setData(null);

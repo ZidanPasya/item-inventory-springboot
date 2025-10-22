@@ -55,8 +55,8 @@ public class ComponentAPIController {
     }
 
     @PostMapping
-    public ResponseHandler<List<ComponentDTO>> save(@RequestBody ComponentDTO componentDTO) {
-        ResponseHandler<List<ComponentDTO>> responseHandler = new ResponseHandler<>();
+    public ResponseHandler<?> save(@RequestBody ComponentDTO componentDTO) {
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = componentService.save(componentDTO);
         if (status) {
             responseHandler.setData(null);
@@ -75,9 +75,9 @@ public class ComponentAPIController {
     }
 
     @DeleteMapping
-    public ResponseHandler<List<ComponentDTO>> delete(@RequestHeader(name = "token") String token,
+    public ResponseHandler<?> delete(@RequestHeader(name = "token") String token,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<ComponentDTO>> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = componentService.remove(id);
         if (status) {
             responseHandler.setData(null);

@@ -59,8 +59,8 @@ public class RoleAPIController {
     // Melakukan Request Body
     // Insert & Update
     @PostMapping
-    public ResponseHandler<List<RoleDTO>> save(@RequestBody RoleDTO roleDTO) {
-        ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<>();
+    public ResponseHandler<?> save(@RequestBody RoleDTO roleDTO) {
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = roleService.save(roleDTO);
         if (status) {
             responseHandler.setData(null);
@@ -80,9 +80,9 @@ public class RoleAPIController {
 
     // Delete
     @DeleteMapping
-    public ResponseHandler<List<RoleDTO>> delete(@RequestHeader(name = "token") String token,
+    public ResponseHandler<?> delete(@RequestHeader(name = "token") String token,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<RoleDTO>> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = roleService.remove(id);
         if (status) {
             responseHandler.setData(null);

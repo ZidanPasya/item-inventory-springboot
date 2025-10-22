@@ -78,9 +78,9 @@ public class EmployeeAPIController {
     // }
 
     @PutMapping
-    public ResponseHandler<EmployeeDTO> update(@RequestBody EmployeeDTO employeeDTO,
+    public ResponseHandler<?> update(@RequestBody EmployeeDTO employeeDTO,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<EmployeeDTO> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = employeeService.update(id, employeeDTO);
         if (status) {
             responseHandler.setData(null);
@@ -95,9 +95,9 @@ public class EmployeeAPIController {
     }
 
     @DeleteMapping
-    public ResponseHandler<List<EmployeeDTO>> delete(@RequestHeader(name = "token") String token,
+    public ResponseHandler<?> delete(@RequestHeader(name = "token") String token,
             @RequestParam(name = "id") Integer id) {
-        ResponseHandler<List<EmployeeDTO>> responseHandler = new ResponseHandler<>();
+        ResponseHandler<?> responseHandler = new ResponseHandler<>();
         boolean status = employeeService.remove(id);
         if (status) {
             responseHandler.setData(null);
